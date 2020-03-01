@@ -6,13 +6,17 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.*;
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.*;
 
 public class Heapsort {
 
+  /* Can't make i as IndexFor("ar") due to i-- */
+  @SuppressWarnings("index")
   public static void heapsort(int[] ar) {
 
     if (ar == null) return;
-    int n = ar.length;
+    @NonNegative int n = ar.length;
 
     // Heapify, converts array into binary heap, O(n)
     for (int i = Math.max(0, (n / 2) - 1); i >= 0; i--) sink(ar, n, i);
@@ -24,13 +28,15 @@ public class Heapsort {
     }
   }
 
-  private static void sink(int[] ar, int n, int i) {
+  private static void sink(int[] ar, @NonNegative int n, @IndexFor("#1") int i) {
 
     while (true) {
-
-      int left = 2 * i + 1; // Left  node
-      int right = 2 * i + 2; // Right node
-      int largest = i;
+      /* Can't use IndexFor("ar" for constant 1 and 2) */
+      @SuppressWarnings("index")
+      @IndexFor("ar") int left = 2 * i + 1; // Left  node
+      @SuppressWarnings("index")
+      @IndexFor("ar") int right = 2 * i + 2; // Right node
+      @IndexFor("ar") int largest = i;
 
       // Right child is larger than parent
       if (right < n && ar[right] > ar[largest]) largest = right;
@@ -46,7 +52,7 @@ public class Heapsort {
     }
   }
 
-  private static void swap(int[] ar, int i, int j) {
+  private static void swap(int[] ar, @IndexFor("#1") int i, @IndexFor("#1") int j) {
     int tmp = ar[i];
     ar[i] = ar[j];
     ar[j] = tmp;
@@ -56,7 +62,7 @@ public class Heapsort {
 
   public static void main(String[] args) {
 
-    int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
+    int @ArrayLen(8) [] array = {10, 4, 6, 4, 8, -13, 2, 3};
     heapsort(array);
     System.out.println(java.util.Arrays.toString(array));
 
@@ -66,8 +72,11 @@ public class Heapsort {
 
   static Random RANDOM = new Random();
 
+  /* For randInt() function, it says 1st argument should be of the type @LessThan() but this
+   * annotation gives error when applied on -10 */
+  @SuppressWarnings("index")
   public static void runTests() {
-    final int NUM_TESTS = 1000;
+    final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
 
       int[] array = new int[i];
@@ -86,7 +95,7 @@ public class Heapsort {
     }
   }
 
-  static int randInt(int min, int max) {
+  static int randInt(@LessThan("#2") int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 }

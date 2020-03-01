@@ -4,12 +4,17 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
+import org.checkerframework.common.value.qual.*;
+import org.checkerframework.checker.index.qual.*;
 
 public class CountingSort {
 
   // Sorts values in the range of [minVal, maxVal] in O(n+maxVal-maxVal)
+  /* maxVal and minVal can't be made @NonNegative logically
+   * Also, can't apply annotations to a[i] - minVal and k as they are not declared as separate variables */
+  @SuppressWarnings("index")
   public static void countingSort(int[] ar, int minVal, int maxVal) {
-    int sz = maxVal - minVal + 1;
+    @NonNegative int sz = maxVal - minVal + 1;
     int[] B = new int[sz];
     for (int i = 0; i < ar.length; i++) B[ar[i] - minVal]++;
     for (int i = 0, k = 0; i < sz; i++) while (B[i]-- > 0) ar[k++] = i + minVal;
@@ -23,7 +28,7 @@ public class CountingSort {
     final int MIN_VAL = -10;
     final int MAX_VAL = +10;
 
-    int[] nums = {+4, -10, +0, +6, +1, -5, -5, +1, +1, -2, 0, +6, +8, -7, +10};
+    int @ArrayLen(15) [] nums = {+4, -10, +0, +6, +1, -5, -5, +1, +1, -2, 0, +6, +8, -7, +10};
     countingSort(nums, MIN_VAL, MAX_VAL);
 
     // prints [-10, -7, -5, -5, -2, 0, 0, 1, 1, 1, 4, 6, 6, 8, 10]

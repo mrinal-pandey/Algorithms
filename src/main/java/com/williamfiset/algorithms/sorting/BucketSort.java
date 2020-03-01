@@ -6,12 +6,18 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.*;
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.*;
 
 public class BucketSort {
 
   // Performs a bucket sort of an array in which all the elements are
   // bounded in the range [minVal, maxVal]. For bucket sort to give linear
   // performance the elements need to be uniformly distributed
+  /* Can't apply @NonNegative to NUM_BUCKETS alone, if applied on all maxVal and minVal
+   * give type conflict 
+   * Also, can't apply @IndexFor("ar") to j alone*/
+  @SuppressWarnings("index")
   public static void bucketSort(int[] ar, final int minVal, final int maxVal) {
 
     if (ar == null || ar.length == 0 || minVal == maxVal) return;
@@ -42,7 +48,7 @@ public class BucketSort {
 
   public static void main(String[] args) {
 
-    int[] array = {10, 4, 6, 8, 13, 2, 3};
+    int [] array = {10, 4, 6, 8, 13, 2, 3};
     bucketSort(array, 2, 13);
     System.out.println(java.util.Arrays.toString(array));
 
@@ -56,8 +62,11 @@ public class BucketSort {
 
   static Random RANDOM = new Random();
 
+  /* For randInt() function, it says 1st argument should be of the type @LessThan() but this
+   * annotation gives error when applied on -1000000 */
+  @SuppressWarnings("index")
   public static void runTests() {
-    final int NUM_TESTS = 1000;
+    final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
 
       int[] array = new int[i];
@@ -76,7 +85,7 @@ public class BucketSort {
     }
   }
 
-  static int randInt(int min, int max) {
+  static int randInt(@LessThan("#2") int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 }
