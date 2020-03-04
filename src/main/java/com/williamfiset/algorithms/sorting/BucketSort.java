@@ -6,18 +6,20 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.*;
-import org.checkerframework.checker.index.qual.*;
-import org.checkerframework.common.value.qual.*;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
 
 public class BucketSort {
 
   // Performs a bucket sort of an array in which all the elements are
   // bounded in the range [minVal, maxVal]. For bucket sort to give linear
   // performance the elements need to be uniformly distributed
-  /* Can't apply @NonNegative to NUM_BUCKETS alone, if applied on all maxVal and minVal
-   * give type conflict 
-   * Also, can't apply @IndexFor("ar") to j alone*/
-  @SuppressWarnings("index")
+  /* Checker says `NUM_BUCKETS` should be @NonNegative but not able to apply @NonNegative
+   * to `NUM_BUCKETS` alone, if applied on all variables `N`, `M` and `NUM_BUCKETS` which are declared together on line 28,
+   * maxVal and minVal give type conflict saying they should also be @NonNegative,
+   * Also, not able to apply @IndexFor("ar") to `j` alone on line 40 as `j` and `bi` are again
+   * declared together*/
+  @SuppressWarnings({"argument.type.incompatible", "array.access.unsafe.high.range"})
   public static void bucketSort(int[] ar, final int minVal, final int maxVal) {
 
     if (ar == null || ar.length == 0 || minVal == maxVal) return;
@@ -62,9 +64,8 @@ public class BucketSort {
 
   static Random RANDOM = new Random();
 
-  /* For randInt() function, it says 1st argument should be of the type @LessThan() but this
-   * annotation gives error when applied on -1000000 */
-  @SuppressWarnings("index")
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
     final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {

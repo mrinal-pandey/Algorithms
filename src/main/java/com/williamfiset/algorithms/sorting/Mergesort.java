@@ -7,8 +7,9 @@ package com.williamfiset.algorithms.sorting;
 
 import java.util.Arrays;
 import java.util.Random;
-import org.checkerframework.checker.index.qual.*;
-import org.checkerframework.common.value.qual.*;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 public class Mergesort {
 
@@ -27,8 +28,9 @@ public class Mergesort {
   }
 
   // Merge two sorted arrays into a larger sorted array
-  /* Can't apply IndexFor() annotation for i1 and i2 alone */
-  @SuppressWarnings("index")
+  /* Not able to apply IndexFor() annotation for `i1` and `i2` alone on line 36
+   * as they are not declared separately*/
+  @SuppressWarnings("array.access.unsafe.high")
   private static int[] merge(int[] ar1, int[] ar2) {
 
     @NonNegative int n1 = ar1.length, n2 = ar2.length;
@@ -63,9 +65,8 @@ public class Mergesort {
 
   static Random RANDOM = new Random();
 
-  /* For randInt() function, it says 1st argument should be of the type @LessThan() but this
-   * annotation gives error when applied on -1000000 */
-  @SuppressWarnings("index")
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
     final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {

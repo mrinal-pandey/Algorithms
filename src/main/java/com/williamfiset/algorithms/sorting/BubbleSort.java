@@ -6,8 +6,11 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.Random;
-import org.checkerframework.checker.index.qual.*;
-import org.checkerframework.common.value.qual.*;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 public class BubbleSort {
 
@@ -53,9 +56,16 @@ public class BubbleSort {
 
   static Random RANDOM = new Random();
 
-  /* For randInt() function, it says 1st argument should be of the type @LessThan() but this
-   * annotation gives error when applied on -1000000 */
-  @SuppressWarnings("index")
+  /* If there is no annotation on `min` below on line number 83 in function randInt(),
+   * Checker framework says `min` should be of the type @Positive but we can't make
+   * `min` @Positive as -1000000 is passed as an argument, framework says so because argument
+   * of `nextInt()` below at line number 84 should be positive
+   * but that can be made sure by making `min` @LessThan("max") so that `max - min` is always positive,
+   * so added the annotation @LessThan("#2") but still we get an error where checker framework
+   * asks -1000000 to be made @LessThan(?) whereas it is @LessThanUnknown, now this
+   * annotation when applied on constant value -1000000 gives an error `illegal start of expression`,
+   * hence I'm suppressing this warning issued corresponding to line number 73*/
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
     final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {

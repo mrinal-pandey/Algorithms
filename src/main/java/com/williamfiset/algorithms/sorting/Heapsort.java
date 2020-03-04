@@ -6,13 +6,21 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.*;
-import org.checkerframework.checker.index.qual.*;
-import org.checkerframework.common.value.qual.*;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 public class Heapsort {
 
-  /* Can't make i as IndexFor("ar") due to i-- */
-  @SuppressWarnings("index")
+  /* Checker says `i` should be @IndexFor("ar") but,
+   * if IndexFor("ar") is applied on `i` in loop on line 30, `Math.max()` gives assignment.type.incompatible
+   * error and `i--` gives `unary.decrement.type.incompatible` error,
+   * `swap()` on line 34 and `sink()` on line 35 gives argument.type.incompatible error,
+   * and if IndexFor("ar") is applied on `i` in loop on line 33, similar errors are thrown,
+   * hence suppressing these warnings because not able to add annotations to handle these warnings*/
+  @SuppressWarnings("argument.type.incompatible")
   public static void heapsort(int[] ar) {
 
     if (ar == null) return;
@@ -31,10 +39,10 @@ public class Heapsort {
   private static void sink(int[] ar, @NonNegative int n, @IndexFor("#1") int i) {
 
     while (true) {
-      /* Can't use IndexFor("ar" for constant 1 and 2) */
-      @SuppressWarnings("index")
+      // Not able to use IndexFor("ar") for constant 1 on line 44 and constant 2 on line 46)
+      @SuppressWarnings("assignment.type.incompatible")
       @IndexFor("ar") int left = 2 * i + 1; // Left  node
-      @SuppressWarnings("index")
+      @SuppressWarnings("assignment.type.incompatible")
       @IndexFor("ar") int right = 2 * i + 2; // Right node
       @IndexFor("ar") int largest = i;
 
@@ -72,9 +80,8 @@ public class Heapsort {
 
   static Random RANDOM = new Random();
 
-  /* For randInt() function, it says 1st argument should be of the type @LessThan() but this
-   * annotation gives error when applied on -10 */
-  @SuppressWarnings("index")
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
     final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {

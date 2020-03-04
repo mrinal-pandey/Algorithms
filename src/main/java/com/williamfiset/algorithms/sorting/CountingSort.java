@@ -4,15 +4,15 @@
  * @author William Fiset, william.alexandre.fiset@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
-import org.checkerframework.common.value.qual.*;
-import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 public class CountingSort {
 
   // Sorts values in the range of [minVal, maxVal] in O(n+maxVal-maxVal)
   /* maxVal and minVal can't be made @NonNegative logically
    * Also, can't apply annotations to a[i] - minVal and k as they are not declared as separate variables */
-  @SuppressWarnings("index")
+  @SuppressWarnings({"assignment.type.incompatible", "array.access.unsafe.low", "array.access.unsafe.high", "array.access.unsafe.high.range"})
   public static void countingSort(int[] ar, int minVal, int maxVal) {
     @NonNegative int sz = maxVal - minVal + 1;
     int[] B = new int[sz];

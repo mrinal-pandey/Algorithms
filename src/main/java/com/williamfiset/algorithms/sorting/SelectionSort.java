@@ -6,8 +6,11 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.Random;
-import org.checkerframework.checker.index.qual.*;
-import org.checkerframework.common.value.qual.*;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 public class SelectionSort {
 
@@ -44,9 +47,8 @@ public class SelectionSort {
 
   static Random RANDOM = new Random();
   
-  /* For randInt() function, it says 1st argument should be of the type @LessThan() but this
-   * annotation gives error when applied on -1000000 */
-  @SuppressWarnings("index")
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
     final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
