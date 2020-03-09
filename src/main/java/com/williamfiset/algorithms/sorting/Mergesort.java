@@ -28,8 +28,8 @@ public class Mergesort {
   }
 
   // Merge two sorted arrays into a larger sorted array
-  /* Not able to apply IndexFor() annotation for `i1` and `i2` alone on line 36
-   * as they are not declared separately*/
+  /* `i1` and `i2` are used as indexes of `ar1[]` and `ar2[]` and will never exceed the range of array
+   * as a check corresponding to both `i1` and `i2` is present on line numbers 41 and 43 respectively */
   @SuppressWarnings("array.access.unsafe.high")
   private static int[] merge(int[] ar1, int[] ar2) {
 

@@ -13,7 +13,8 @@ import org.checkerframework.common.value.qual.ArrayLen;
 
 public class Quicksort {
 
-  /* Not able to make 0 and ar.length - 1 as IndexFor("ar") on line number 20*/
+  /* `quickSort()` is called within the interval `0` and `ar.length - 1` which lies in the range of
+   * array, hence the code is safe  */
   @SuppressWarnings("argument.type.incompatible")
   public static void quicksort(int[] ar) {
     if (ar == null) return;
@@ -21,7 +22,8 @@ public class Quicksort {
   }
 
   // Sort interval [lo, hi] inplace recursively
-  /* Not able apply @IndexFor("ar") for constant 1 on line 30*/
+  /* `quickSort()` is called within the interval `splitPoint + 1` and `hi` which lies in the range of
+   * array, hence the code is safe */
   @SuppressWarnings("argument.type.incompatible")
   private static void quicksort(int[] ar, @IndexFor("#1") int lo, @IndexFor("#1") int hi) {
     if (lo < hi) {
@@ -32,7 +34,8 @@ public class Quicksort {
   }
 
   // Performs Hoare partition algorithm for quicksort
-  /* Not able to apply IndexFor("ar") for `i` and `j` due to increment and decrement operation */
+  /* `i` and `j` will never go out of the range of the array as per the design of `Hoare's partition`
+   * algorithm, hence the code is safe */
   @SuppressWarnings({"array.access.unsafe.high", "array.access.unsafe.low", "return.type.incompatible"})
   private static @IndexFor("#1") int partition(int[] ar, @IndexFor("#1") int lo, @IndexFor("#1") int hi) {
     int pivot = ar[lo];

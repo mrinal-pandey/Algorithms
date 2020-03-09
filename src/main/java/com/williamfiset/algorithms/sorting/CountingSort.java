@@ -10,8 +10,11 @@ import org.checkerframework.common.value.qual.ArrayLen;
 public class CountingSort {
 
   // Sorts values in the range of [minVal, maxVal] in O(n+maxVal-maxVal)
-  /* maxVal and minVal can't be made @NonNegative logically
-   * Also, can't apply annotations to a[i] - minVal and k as they are not declared as separate variables */
+  /* maxVal and minVal shouldn't be made @NonNegative logically on line number 19 as if array contains -ve values,
+   * both of them can become -ve,
+   * Also, `a[i] - minVal` is in the range of array `B[]` as size of `B[]` is `sz`
+   * and no `a[i] - minVal` value can go outside this range, `k` on the line 23
+   *  is in the range of `ar[]` as it is incremented at most one less than `ar.length` numbers of times */
   @SuppressWarnings({"assignment.type.incompatible", "array.access.unsafe.low", "array.access.unsafe.high", "array.access.unsafe.high.range"})
   public static void countingSort(int[] ar, int minVal, int maxVal) {
     @NonNegative int sz = maxVal - minVal + 1;

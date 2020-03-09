@@ -14,12 +14,10 @@ import org.checkerframework.common.value.qual.ArrayLen;
 
 public class Heapsort {
 
-  /* Checker says `i` should be @IndexFor("ar") but,
-   * if IndexFor("ar") is applied on `i` in loop on line 30, `Math.max()` gives assignment.type.incompatible
-   * error and `i--` gives `unary.decrement.type.incompatible` error,
-   * `swap()` on line 34 and `sink()` on line 35 gives argument.type.incompatible error,
-   * and if IndexFor("ar") is applied on `i` in loop on line 33, similar errors are thrown,
-   * hence suppressing these warnings because not able to add annotations to handle these warnings*/
+  /* `i` on line number 28 is surely an index of array `ar[]` as it is maximum of `0` and `n / 2 - 1` and
+   * both these values are in range of array,
+   * `i` on line number 31 also lies inside range of array, as it is between `n - 1` and `0`
+   */
   @SuppressWarnings("argument.type.incompatible")
   public static void heapsort(int[] ar) {
 
@@ -39,7 +37,9 @@ public class Heapsort {
   private static void sink(int[] ar, @NonNegative int n, @IndexFor("#1") int i) {
 
     while (true) {
-      // Not able to use IndexFor("ar") for constant 1 on line 44 and constant 2 on line 46)
+      /* Both `left` and `right` are checked to be in range of array `ar[]` on line 50 and 53 respectively,
+       * hence the code is safe
+       */
       @SuppressWarnings("assignment.type.incompatible")
       @IndexFor("ar") int left = 2 * i + 1; // Left  node
       @SuppressWarnings("assignment.type.incompatible")

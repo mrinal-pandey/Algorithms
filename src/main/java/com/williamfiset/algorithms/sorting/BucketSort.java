@@ -8,24 +8,28 @@ package com.williamfiset.algorithms.sorting;
 import java.util.*;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 public class BucketSort {
 
   // Performs a bucket sort of an array in which all the elements are
   // bounded in the range [minVal, maxVal]. For bucket sort to give linear
   // performance the elements need to be uniformly distributed
-  /* Checker says `NUM_BUCKETS` should be @NonNegative but not able to apply @NonNegative
-   * to `NUM_BUCKETS` alone, if applied on all variables `N`, `M` and `NUM_BUCKETS` which are declared together on line 28,
-   * maxVal and minVal give type conflict saying they should also be @NonNegative,
-   * Also, not able to apply @IndexFor("ar") to `j` alone on line 40 as `j` and `bi` are again
-   * declared together*/
-  @SuppressWarnings({"argument.type.incompatible", "array.access.unsafe.high.range"})
+  /* `j` on line number 44 is within the range of `ar[]` as it is incremented at most one less than
+   * `ar.length` number of times */
+  @SuppressWarnings({"array.access.unsafe.high.range"})
   public static void bucketSort(int[] ar, final int minVal, final int maxVal) {
 
     if (ar == null || ar.length == 0 || minVal == maxVal) return;
 
     // N is number elements and M is the range of values
-    final int N = ar.length, M = maxVal - minVal, NUM_BUCKETS = M / N + 1;
+
+    /* `maxVal` and `minVal` give type conflict saying they should also be @NonNegative,
+     * but if the array contains -ve values `minVal` can be -ve, also if only -ve values
+     * are there in the array even `maxVal` would be -ve, hence Suppressing the warning
+     * corresponding to line number 32*/
+    @SuppressWarnings({"assignment.type.incompatible"})
+    final @NonNegative int N = ar.length, M = maxVal - minVal, NUM_BUCKETS = M / N + 1;
     List<List<Integer>> buckets = new ArrayList<>(NUM_BUCKETS);
     for (int i = 0; i < NUM_BUCKETS; i++) buckets.add(new ArrayList<>());
 
