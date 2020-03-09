@@ -7,13 +7,16 @@ package com.williamfiset.algorithms.sorting;
 
 import java.util.Arrays;
 import java.util.Random;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 public class Mergesort {
 
   public static int[] mergesort(int[] ar) {
 
     // Base case is when a single element (which is already sorted)
-    int n = ar.length;
+    @NonNegative int n = ar.length;
     if (n == 1) return ar;
 
     // Split array into two parts and recursively sort them
@@ -25,10 +28,13 @@ public class Mergesort {
   }
 
   // Merge two sorted arrays into a larger sorted array
+  /* `i1` and `i2` are used as indexes of `ar1[]` and `ar2[]` and will never exceed the range of array
+   * as a check corresponding to both `i1` and `i2` is present on line numbers 41 and 43 respectively */
+  @SuppressWarnings("array.access.unsafe.high")
   private static int[] merge(int[] ar1, int[] ar2) {
 
-    int n1 = ar1.length, n2 = ar2.length;
-    int n = n1 + n2, i1 = 0, i2 = 0;
+    @NonNegative int n1 = ar1.length, n2 = ar2.length;
+    @NonNegative int n = n1 + n2, i1 = 0, i2 = 0;
     int[] ar = new int[n];
 
     for (int i = 0; i < n; i++) {
@@ -59,8 +65,10 @@ public class Mergesort {
 
   static Random RANDOM = new Random();
 
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
-    final int NUM_TESTS = 1000;
+    final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
 
       int[] array = new int[i];
@@ -74,7 +82,7 @@ public class Mergesort {
     }
   }
 
-  static int randInt(int min, int max) {
+  static int randInt(@LessThan("#2") int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 }

@@ -6,6 +6,11 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.Random;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 public class BubbleSort {
 
@@ -16,7 +21,7 @@ public class BubbleSort {
   public static void bubbleSort(int[] ar) {
     if (ar == null) return;
 
-    final int N = ar.length;
+    final @NonNegative int N = ar.length;
     boolean sorted;
 
     do {
@@ -33,7 +38,7 @@ public class BubbleSort {
     } while (!sorted);
   }
 
-  private static void swap(int[] ar, int i, int j) {
+  private static void swap(int[] ar, @IndexFor("#1") int i, @IndexFor("#1") int j) {
     int tmp = ar[i];
     ar[i] = ar[j];
     ar[j] = tmp;
@@ -41,7 +46,7 @@ public class BubbleSort {
 
   public static void main(String[] args) {
 
-    int[] array = {10, 4, 6, 8, 13, 2, 3};
+    int @ArrayLen(7) [] array = {10, 4, 6, 8, 13, 2, 3};
     bubbleSort(array);
     System.out.println(java.util.Arrays.toString(array));
 
@@ -51,11 +56,20 @@ public class BubbleSort {
 
   static Random RANDOM = new Random();
 
+  /* If there is no annotation on `min` below on line number 83 in function randInt(),
+   * Checker framework says `min` should be of the type @Positive but we can't make
+   * `min` @Positive as -1000000 is passed as an argument, framework says so because argument
+   * of `nextInt()` below at line number 84 should be positive
+   * but that can be made sure by making `min` @LessThan("max") so that `max - min` is always positive,
+   * so added the annotation @LessThan("#2") but still we get an error where checker framework
+   * asks -1000000 to be made @LessThan(?) whereas it is @LessThanUnknown, now this
+   * annotation when applied on constant value -1000000 gives an error `illegal start of expression`,
+   * hence I'm suppressing this warning issued corresponding to line number 73*/
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
-    final int NUM_TESTS = 1000;
+    final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
-
-      int[] array = new int[i];
+      int [] array = new int[i];
       for (int j = 0; j < i; j++) array[j] = randInt(-1000000, +1000000);
       int[] arrayCopy = array.clone();
 
@@ -66,7 +80,7 @@ public class BubbleSort {
     }
   }
 
-  static int randInt(int min, int max) {
+  static int randInt(@LessThan("#2") int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 }

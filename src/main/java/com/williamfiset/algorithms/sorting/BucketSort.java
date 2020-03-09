@@ -6,18 +6,30 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.*;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 public class BucketSort {
 
   // Performs a bucket sort of an array in which all the elements are
   // bounded in the range [minVal, maxVal]. For bucket sort to give linear
   // performance the elements need to be uniformly distributed
+  /* `j` on line number 44 is within the range of `ar[]` as it is incremented at most one less than
+   * `ar.length` number of times */
+  @SuppressWarnings({"array.access.unsafe.high.range"})
   public static void bucketSort(int[] ar, final int minVal, final int maxVal) {
 
     if (ar == null || ar.length == 0 || minVal == maxVal) return;
 
     // N is number elements and M is the range of values
-    final int N = ar.length, M = maxVal - minVal, NUM_BUCKETS = M / N + 1;
+
+    /* `maxVal` and `minVal` give type conflict saying they should also be @NonNegative,
+     * but if the array contains -ve values `minVal` can be -ve, also if only -ve values
+     * are there in the array even `maxVal` would be -ve, hence Suppressing the warning
+     * corresponding to line number 32*/
+    @SuppressWarnings({"assignment.type.incompatible"})
+    final @NonNegative int N = ar.length, M = maxVal - minVal, NUM_BUCKETS = M / N + 1;
     List<List<Integer>> buckets = new ArrayList<>(NUM_BUCKETS);
     for (int i = 0; i < NUM_BUCKETS; i++) buckets.add(new ArrayList<>());
 
@@ -42,7 +54,7 @@ public class BucketSort {
 
   public static void main(String[] args) {
 
-    int[] array = {10, 4, 6, 8, 13, 2, 3};
+    int [] array = {10, 4, 6, 8, 13, 2, 3};
     bucketSort(array, 2, 13);
     System.out.println(java.util.Arrays.toString(array));
 
@@ -56,8 +68,10 @@ public class BucketSort {
 
   static Random RANDOM = new Random();
 
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
-    final int NUM_TESTS = 1000;
+    final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
 
       int[] array = new int[i];
@@ -76,7 +90,7 @@ public class BucketSort {
     }
   }
 
-  static int randInt(int min, int max) {
+  static int randInt(@LessThan("#2") int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 }

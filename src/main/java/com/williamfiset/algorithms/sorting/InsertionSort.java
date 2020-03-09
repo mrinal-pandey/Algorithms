@@ -6,6 +6,11 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.Random;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 public class InsertionSort {
 
@@ -17,12 +22,12 @@ public class InsertionSort {
 
     if (ar == null) return;
 
-    final int N = ar.length;
+    final @NonNegative int N = ar.length;
 
     for (int i = 1; i < N; i++) for (int j = i; j > 0 && ar[j] < ar[j - 1]; j--) swap(ar, j - 1, j);
   }
 
-  private static void swap(int[] ar, int i, int j) {
+  private static void swap(int[] ar, @IndexFor("#1") int i, @IndexFor("#1") int j) {
     int tmp = ar[i];
     ar[i] = ar[j];
     ar[j] = tmp;
@@ -30,7 +35,7 @@ public class InsertionSort {
 
   public static void main(String[] args) {
 
-    int[] array = {10, 4, 6, 8, 13, 2, 3};
+    int @ArrayLen(7) [] array = {10, 4, 6, 8, 13, 2, 3};
     insertionSort(array);
     System.out.println(java.util.Arrays.toString(array));
 
@@ -40,8 +45,10 @@ public class InsertionSort {
 
   static Random RANDOM = new Random();
 
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
-    final int NUM_TESTS = 1000;
+    final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
 
       int[] array = new int[i];
@@ -55,7 +62,7 @@ public class InsertionSort {
     }
   }
 
-  static int randInt(int min, int max) {
+  static int randInt(@LessThan("#2") int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 }

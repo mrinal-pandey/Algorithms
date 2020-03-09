@@ -6,25 +6,38 @@
 package com.williamfiset.algorithms.sorting;
 
 import java.util.Random;
+import org.checkerframework.checker.index.qual.IndexFor;
+import org.checkerframework.checker.index.qual.LessThan;
+import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.common.value.qual.ArrayLen;
 
 public class Quicksort {
 
+  /* `quickSort()` is called within the interval `0` and `ar.length - 1` which lies in the range of
+   * array, hence the code is safe  */
+  @SuppressWarnings("argument.type.incompatible")
   public static void quicksort(int[] ar) {
     if (ar == null) return;
     quicksort(ar, 0, ar.length - 1);
   }
 
   // Sort interval [lo, hi] inplace recursively
-  private static void quicksort(int[] ar, int lo, int hi) {
+  /* `quickSort()` is called within the interval `splitPoint + 1` and `hi` which lies in the range of
+   * array, hence the code is safe */
+  @SuppressWarnings("argument.type.incompatible")
+  private static void quicksort(int[] ar, @IndexFor("#1") int lo, @IndexFor("#1") int hi) {
     if (lo < hi) {
-      int splitPoint = partition(ar, lo, hi);
+      @IndexFor("ar") int splitPoint = partition(ar, lo, hi);
       quicksort(ar, lo, splitPoint);
       quicksort(ar, splitPoint + 1, hi);
     }
   }
 
   // Performs Hoare partition algorithm for quicksort
-  private static int partition(int[] ar, int lo, int hi) {
+  /* `i` and `j` will never go out of the range of the array as per the design of `Hoare's partition`
+   * algorithm, hence the code is safe */
+  @SuppressWarnings({"array.access.unsafe.high", "array.access.unsafe.low", "return.type.incompatible"})
+  private static @IndexFor("#1") int partition(int[] ar, @IndexFor("#1") int lo, @IndexFor("#1") int hi) {
     int pivot = ar[lo];
     int i = lo - 1, j = hi + 1;
     while (true) {
@@ -40,7 +53,7 @@ public class Quicksort {
   }
 
   // Swap two elements
-  private static void swap(int[] ar, int i, int j) {
+  private static void swap(int[] ar, @IndexFor("#1") int i, @IndexFor("#1") int j) {
     int tmp = ar[i];
     ar[i] = ar[j];
     ar[j] = tmp;
@@ -48,7 +61,7 @@ public class Quicksort {
 
   public static void main(String[] args) {
 
-    int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
+    int @ArrayLen(8) [] array = {10, 4, 6, 4, 8, -13, 2, 3};
     quicksort(array);
     System.out.println(java.util.Arrays.toString(array));
 
@@ -60,8 +73,10 @@ public class Quicksort {
 
   static Random RANDOM = new Random();
 
+  // Same reason as stated in BubbleSort.java
+  @SuppressWarnings("argument.type.incompatible")
   public static void runTests() {
-    final int NUM_TESTS = 1000;
+    final @Positive int NUM_TESTS = 1000;
     for (int i = 1; i <= NUM_TESTS; i++) {
 
       int[] array = new int[i];
@@ -75,7 +90,7 @@ public class Quicksort {
     }
   }
 
-  static int randInt(int min, int max) {
+  static int randInt(@LessThan("#2") int min, int max) {
     return RANDOM.nextInt((max - min) + 1) + min;
   }
 }
